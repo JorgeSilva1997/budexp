@@ -1,0 +1,64 @@
+{
+    "name": "budexp",
+    "version": "0.1.0",
+    "description": "A powerful CLI tool to facilitate mobile development with Expo + React Native stack",
+    "main": "./bin/budexp.js",
+    "bin": {
+      "budexp": "./bin/budexp.js"
+    },
+    "files": [
+      "bin",
+      "src",
+      "README.md",
+      "LICENSE"
+    ],
+    "scripts": {
+      "test": "node bin/budexp.js --help",
+      "test:check": "node bin/budexp.js check --help",
+      "test:dev": "node bin/budexp.js dev --help",
+      "test:build": "node bin/budexp.js build --help",
+      "test:clean": "node bin/budexp.js clean --help",
+      "lint": "eslint .",
+      "lint:fix": "eslint . --fix",
+      "format": "prettier . --write",
+      "format:check": "prettier . --check"
+    },
+    "keywords": [
+      "expo",
+      "react-native",
+      "cli",
+      "development",
+      "build",
+      "apk",
+      "ipa",
+      "eas"
+    ],
+    "author": "Jorge Silva",
+    "license": "MIT",
+    "dependencies": {
+      "chalk": "^4.1.2",
+      "commander": "^11.1.0",
+      "fs-extra": "^11.2.0",
+      "inquirer": "^8.2.7",
+      "ora": "5.4.1"
+    },
+    "engines": {
+      "node": ">=14.0.0"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/JorgeSilva1997/budexp.git"
+    },
+    "bugs": {
+      "url": "https://github.com/JorgeSilva1997/budexp/issues"
+    },
+    "homepage": "https://github.com/JorgeSilva1997/budexp#readme",
+    "devDependencies": {
+      "@eslint/js": "^9.39.4",
+      "eslint": "^9.39.4",
+      "eslint-config-prettier": "^10.1.8",
+      "globals": "^17.5.0",
+      "prettier": "^3.8.3"
+    }
+  }
+  
