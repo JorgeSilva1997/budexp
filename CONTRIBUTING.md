@@ -74,8 +74,8 @@ node bin/budexp.js clean --help
 Development setup
 Clone the repository:
 
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-cd YOUR_REPOSITORY
+git clone https://github.com/JorgeSilva1997/budexp.git
+cd budexp
 npm install
 Run the CLI locally:
 
@@ -104,3 +104,4 @@ docs: improve installation instructions
 feat: add no-open flag for health reports
 chore: update dependencies
 Pull request titles should clearly describe the change.
+```
