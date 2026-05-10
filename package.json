@@ -4,7 +4,7 @@
   "description": "A powerful CLI tool to facilitate mobile development with Expo + React Native stack",
   "main": "./bin/budexp.js",
   "bin": {
-    "budexp": "./bin/budexp.js"
+    "budexp": "bin/budexp.js"
   },
   "files": [
     "bin",
