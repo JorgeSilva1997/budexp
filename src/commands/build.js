@@ -7,7 +7,7 @@ const logger = require('../utils/logger');
 const cleaner = require('../utils/cleaner');
 const expoDoctor = require('../utils/expo-doctor');
 const eas = require('../utils/eas');
-const { execFileSync } = require('child_process');
+const { execCommandSync } = require('../utils/commands');
 const fs = require('fs-extra');
 const path = require('path');
 
@@ -102,7 +102,7 @@ async function buildCommand(options) {
 
       if (loginAnswer.login) {
         try {
-          execFileSync('eas', ['login'], { stdio: 'inherit' });
+          execCommandSync('eas', ['login'], { stdio: 'inherit' });
         } catch (e) {
           logger.error('Failed to login to EAS');
           return;
@@ -180,7 +180,7 @@ async function buildCommand(options) {
       // Local build
       if (platform === 'all') {
         logger.info('Building Android first...');
-        execFileSync(
+        execCommandSync(
           'eas',
           ['build', '--platform', 'android', '--local', '--profile', buildProfile],
           {
@@ -190,12 +190,16 @@ async function buildCommand(options) {
         await moveBuildArtifactsToFolder('android');
 
         logger.info('Now building iOS...');
-        execFileSync('eas', ['build', '--platform', 'ios', '--local', '--profile', buildProfile], {
-          stdio: 'inherit',
-        });
+        execCommandSync(
+          'eas',
+          ['build', '--platform', 'ios', '--local', '--profile', buildProfile],
+          {
+            stdio: 'inherit',
+          }
+        );
         await moveBuildArtifactsToFolder('ios');
       } else {
-        execFileSync(
+        execCommandSync(
           'eas',
           ['build', '--platform', platform, '--local', '--profile', buildProfile],
           {
@@ -208,16 +212,16 @@ async function buildCommand(options) {
       // Cloud build via EAS
       if (platform === 'all') {
         logger.info('Starting Android cloud build...');
-        execFileSync('eas', ['build', '--platform', 'android', '--profile', buildProfile], {
+        execCommandSync('eas', ['build', '--platform', 'android', '--profile', buildProfile], {
           stdio: 'inherit',
         });
 
         logger.info('Starting iOS cloud build...');
-        execFileSync('eas', ['build', '--platform', 'ios', '--profile', buildProfile], {
+        execCommandSync('eas', ['build', '--platform', 'ios', '--profile', buildProfile], {
           stdio: 'inherit',
         });
       } else {
-        execFileSync('eas', ['build', '--platform', platform, '--profile', buildProfile], {
+        execCommandSync('eas', ['build', '--platform', platform, '--profile', buildProfile], {
           stdio: 'inherit',
         });
       }
@@ -291,7 +295,7 @@ async function buildCommand(options) {
 
         if (loginAnswer.login) {
           try {
-            execFileSync('eas', ['login'], { stdio: 'inherit' });
+            execCommandSync('eas', ['login'], { stdio: 'inherit' });
           } catch (e) {
             logger.error('Failed to login to EAS');
             return;

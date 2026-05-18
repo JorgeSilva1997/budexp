@@ -3,7 +3,8 @@ const prompt = inquirer.default?.prompt || inquirer.prompt;
 const logger = require('../utils/logger');
 const cleaner = require('../utils/cleaner');
 const expoDoctor = require('../utils/expo-doctor');
-const { execFileSync, execSync } = require('child_process');
+const { execSync } = require('child_process');
+const { execCommandSync } = require('../utils/commands');
 
 async function devCommand(options) {
   logger.info('Starting development mode...');
@@ -103,7 +104,7 @@ async function devCommand(options) {
     const runWithDeviceSelection = async (targetPlatform) => {
       if (options.device) {
         // Expo CLI will prompt to choose among available emulators/simulators and connected devices.
-        execFileSync('npx', ['expo', `run:${targetPlatform}`, '--device'], { stdio: 'inherit' });
+        execCommandSync('npx', ['expo', `run:${targetPlatform}`, '--device'], { stdio: 'inherit' });
         return;
       }
 

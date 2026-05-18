@@ -1,8 +1,9 @@
-const { execFileSync, execSync } = require('child_process');
+const { execSync } = require('child_process');
 const fs = require('fs-extra');
 const path = require('path');
 const readline = require('readline');
 const logger = require('./logger');
+const { commandExists, execCommandSync } = require('./commands');
 
 function askQuestion(question) {
   const rl = readline.createInterface({
@@ -45,7 +46,7 @@ function removeFilesByPrefix(directory, prefixes) {
 
 function tryExecFile(command, args, options = {}) {
   try {
-    execFileSync(command, args, options);
+    execCommandSync(command, args, options);
     return true;
   } catch (e) {
     return false;
@@ -61,13 +62,13 @@ async function killRunningApps(bundleId, platform) {
   if (platform === 'android' || platform === 'all') {
     try {
       if (commandExists('adb')) {
-        const devices = execFileSync('adb', ['devices'], { encoding: 'utf8' });
+        const devices = execCommandSync('adb', ['devices'], { encoding: 'utf8' });
         const deviceCount = (devices.match(/device$/gm) || []).length;
 
         if (deviceCount > 0 && bundleId) {
           try {
             if (isValidBundleId(bundleId)) {
-              execFileSync('adb', ['shell', 'am', 'force-stop', bundleId], { stdio: 'ignore' });
+              execCommandSync('adb', ['shell', 'am', 'force-stop', bundleId], { stdio: 'ignore' });
               logger.success('Stopped Android app');
             } else {
               logger.warning('Invalid bundle identifier, skipping Android app kill');
@@ -108,7 +109,7 @@ async function cleanWatchman() {
   logger.step('Cleaning watchman cache...');
   try {
     if (commandExists('watchman')) {
-      execFileSync('watchman', ['watch-del-all'], { stdio: 'ignore' });
+      execCommandSync('watchman', ['watch-del-all'], { stdio: 'ignore' });
       logger.success('Watchman cache cleared');
     } else {
       logger.warning('Watchman not found, skipping...');
@@ -275,7 +276,7 @@ async function reinstallDependencies() {
   }
 
   try {
-    execFileSync(packageManager, ['install'], { stdio: 'inherit' });
+    execCommandSync(packageManager, ['install'], { stdio: 'inherit' });
     logger.success('Dependencies installed');
   } catch (e) {
     logger.error('Failed to install dependencies');
@@ -291,9 +292,9 @@ async function rebuildNative(platform) {
 
   try {
     if (platform === 'all') {
-      execFileSync('npx', ['expo', 'prebuild', '--clean'], { stdio: 'inherit' });
+      execCommandSync('npx', ['expo', 'prebuild', '--clean'], { stdio: 'inherit' });
     } else {
-      execFileSync('npx', ['expo', 'prebuild', '--clean', '--platform', platform], {
+      execCommandSync('npx', ['expo', 'prebuild', '--clean', '--platform', platform], {
         stdio: 'inherit',
       });
     }
@@ -301,19 +302,6 @@ async function rebuildNative(platform) {
   } catch (e) {
     logger.error('Failed to rebuild native code');
     throw e;
-  }
-}
-
-/**
- * Check if command exists
- */
-function commandExists(command) {
-  try {
-    const lookupCommand = process.platform === 'win32' ? 'where' : 'which';
-    execFileSync(lookupCommand, [command], { stdio: 'ignore' });
-    return true;
-  } catch (e) {
-    return false;
   }
 }
 

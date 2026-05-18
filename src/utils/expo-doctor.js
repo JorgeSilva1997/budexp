@@ -2,6 +2,7 @@ const { execFileSync } = require('child_process');
 const fs = require('fs-extra');
 const path = require('path');
 const logger = require('./logger');
+const { execCommandSync } = require('./commands');
 
 /**
  * Run expo-doctor and generate HTML report
@@ -17,7 +18,7 @@ async function runExpoDoctor(options = {}) {
 
   try {
     // Run expo-doctor and capture output
-    const output = execFileSync('npx', ['expo-doctor'], {
+    const output = execCommandSync('npx', ['expo-doctor'], {
       encoding: 'utf8',
       stdio: 'pipe',
     });

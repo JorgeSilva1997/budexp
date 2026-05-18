@@ -1,8 +1,8 @@
 // ============================================
 // FILE: src/utils/eas.js (Enhanced)
 // ============================================
-const { execFileSync } = require('child_process');
 const logger = require('./logger');
+const { execCommandSync } = require('./commands');
 
 function validatePlatform(platform) {
   if (!['android', 'ios'].includes(platform)) {
@@ -23,7 +23,7 @@ async function checkEASLogin() {
   logger.step('Checking EAS login status...');
 
   try {
-    const output = execFileSync('eas', ['whoami'], { encoding: 'utf8', stdio: 'pipe' });
+    const output = execCommandSync('eas', ['whoami'], { encoding: 'utf8', stdio: 'pipe' });
     const email = output.trim();
 
     if (email && !email.includes('error') && !email.includes('not logged')) {
@@ -130,7 +130,7 @@ async function listEASBuilds() {
 
   try {
     console.log('');
-    execFileSync('eas', ['build:list', '--limit', '20'], { stdio: 'inherit' });
+    execCommandSync('eas', ['build:list', '--limit', '20'], { stdio: 'inherit' });
     console.log('');
   } catch (e) {
     logger.error('Failed to fetch builds. Make sure you are logged in to EAS.');
@@ -147,7 +147,7 @@ async function viewEASBuild(buildId) {
   try {
     validateBuildId(buildId);
     console.log('');
-    execFileSync('eas', ['build:view', buildId], { stdio: 'inherit' });
+    execCommandSync('eas', ['build:view', buildId], { stdio: 'inherit' });
     console.log('');
   } catch (e) {
     logger.error(`Failed to fetch build ${buildId}`);
@@ -163,7 +163,7 @@ async function displayEASProjectInfo() {
 
   try {
     console.log('');
-    execFileSync('eas', ['project:info'], { stdio: 'inherit' });
+    execCommandSync('eas', ['project:info'], { stdio: 'inherit' });
     console.log('');
   } catch (e) {
     logger.error('Failed to fetch project info');
@@ -179,7 +179,7 @@ async function submitToEAS(platform) {
 
   try {
     validatePlatform(platform);
-    execFileSync('eas', ['submit', '--platform', platform], { stdio: 'inherit' });
+    execCommandSync('eas', ['submit', '--platform', platform], { stdio: 'inherit' });
     logger.success('Build submitted successfully');
   } catch (e) {
     logger.error('Failed to submit build to EAS');
