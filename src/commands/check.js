@@ -4,7 +4,7 @@
 const logger = require('../utils/logger');
 const expoDoctor = require('../utils/expo-doctor');
 const eas = require('../utils/eas');
-const { execFileSync } = require('child_process');
+const { execCommandSync } = require('../utils/commands');
 
 async function checkCommand(type, buildId, options = {}) {
   if (type === 'health') {
@@ -103,7 +103,7 @@ async function checkFix(options = {}) {
   console.log('');
 
   try {
-    execFileSync('npx', ['expo', 'fix'], { stdio: 'inherit' });
+    execCommandSync('npx', ['expo', 'fix'], { stdio: 'inherit' });
     logger.success('expo fix completed');
     console.log('');
 

@@ -1,6 +1,6 @@
 {
   "name": "budexp",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "A powerful CLI tool to facilitate mobile development with Expo + React Native stack",
   "main": "./bin/budexp.js",
   "bin": {
